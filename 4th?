@@ -1,0 +1,126 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Layout } from "@/components/site/Layout";
+import { useI18n } from "@/lib/ctx/i18n";
+import heroImg from "@/assets/hero-food.jpg";
+import tacosImg from "@/assets/tacos.jpg";
+import fajitasImg from "@/assets/fajitas.jpg";
+import margaritaImg from "@/assets/margarita.jpg";
+import { MapPin, Clock, Phone, ChevronRight, Star } from "lucide-react";
+
+export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Real Tequila Mexican Restaurant — Mounds, OK" },
+      { name: "description", content: "Authentic Mexican food, sizzling fajitas, fresh seafood, tacos and handcrafted margaritas in Mounds, Oklahoma." },
+      { property: "og:title", content: "Real Tequila Mexican Restaurant" },
+      { property: "og:description", content: "Authentic Mexican flavors in Mounds, OK." },
+    ],
+  }),
+  component: Index,
+});
+
+function Index() {
+  const { tr, lang } = useI18n();
+  const highlights = [
+    { img: tacosImg, title: { en: "Street Tacos", es: "Tacos al Pastor" }, desc: { en: "Corn tortillas, cilantro, onion, fresh lime.", es: "Tortillas de maíz, cilantro, cebolla, limón fresco." } },
+    { img: fajitasImg, title: { en: "Sizzling Fajitas", es: "Fajitas a la Parrilla" }, desc: { en: "Steak, chicken or shrimp on a hot skillet.", es: "Bistec, pollo o camarón en sartén caliente." } },
+    { img: margaritaImg, title: { en: "Real Margaritas", es: "Margaritas de Verdad" }, desc: { en: "From classic lime to mangonada towers.", es: "Desde la clásica de limón hasta torres de mangonada." } },
+  ];
+
+  return (
+    <Layout>
+      {/* Hero */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={heroImg} alt="Authentic Mexican food spread" width={1920} height={1080} className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
+        </div>
+        <div className="relative container mx-auto px-4 sm:px-6 pt-24 pb-32 md:pt-36 md:pb-44">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-[var(--amber-glow)] mb-4">
+              <span className="w-8 h-px bg-[var(--amber-glow)]" />
+              {lang === "en" ? "Mounds, Oklahoma" : "Mounds, Oklahoma"}
+            </div>
+            <h1 className="text-5xl md:text-7xl font-black leading-[0.95] mb-6" style={{ fontFamily: "var(--font-display)" }}>
+              {tr("hero_title")}
+            </h1>
+            <p className="text-lg md:text-xl text-foreground/80 mb-8 max-w-xl">{tr("hero_sub")}</p>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                to="/menu"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold bg-primary text-primary-foreground hover:opacity-90 transition shadow-[var(--shadow-warm)]"
+              >
+                {tr("cta_menu")} <ChevronRight className="w-4 h-4" />
+              </Link>
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold border border-border bg-background/40 backdrop-blur hover:bg-secondary transition"
+              >
+                {tr("cta_visit")}
+              </Link>
+            </div>
+            <div className="flex items-center gap-1 mt-8 text-sm text-muted-foreground">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <Star key={i} className="w-4 h-4 fill-[var(--amber-glow)] text-[var(--amber-glow)]" />
+              ))}
+              <span className="ml-2">{lang === "en" ? "Loved by locals" : "Querido por los locales"}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Highlights */}
+      <section className="container mx-auto px-4 sm:px-6 py-16 md:py-24">
+        <div className="flex items-end justify-between flex-wrap gap-4 mb-10">
+          <div>
+            <p className="text-xs uppercase tracking-[0.3em] text-[var(--agave)] mb-2">{lang === "en" ? "Specialties" : "Especialidades"}</p>
+            <h2 className="text-3xl md:text-5xl font-bold" style={{ fontFamily: "var(--font-display)" }}>
+              {lang === "en" ? "Crowd favorites" : "Los favoritos"}
+            </h2>
+          </div>
+          <Link to="/menu" className="text-sm font-semibold text-[var(--agave)] hover:underline inline-flex items-center gap-1">
+            {tr("cta_menu")} <ChevronRight className="w-4 h-4" />
+          </Link>
+        </div>
+        <div className="grid md:grid-cols-3 gap-6">
+          {highlights.map((h, i) => (
+            <article key={i} className="group rounded-2xl overflow-hidden bg-card border border-border hover:border-[var(--agave)] transition shadow-sm">
+              <div className="aspect-[4/3] overflow-hidden">
+                <img src={h.img} alt={h.title[lang]} width={800} height={600} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-2" style={{ fontFamily: "var(--font-display)" }}>{h.title[lang]}</h3>
+                <p className="text-sm text-muted-foreground">{h.desc[lang]}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* Visit strip */}
+      <section className="container mx-auto px-4 sm:px-6 pb-16">
+        <div className="rounded-3xl p-8 md:p-12 border border-border bg-card relative overflow-hidden">
+          <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full opacity-20" style={{ background: "var(--gradient-accent)" }} />
+          <div className="relative grid md:grid-cols-3 gap-8">
+            <div>
+              <MapPin className="w-6 h-6 text-[var(--amber-glow)] mb-3" />
+              <h3 className="font-bold mb-1">{tr("location")}</h3>
+              <p className="text-sm text-muted-foreground">1302 Commercial Ave<br/>Mounds, OK 74047</p>
+            </div>
+            <div>
+              <Clock className="w-6 h-6 text-[var(--amber-glow)] mb-3" />
+              <h3 className="font-bold mb-1">{tr("hours")}</h3>
+              <p className="text-sm text-muted-foreground">{lang === "en" ? "Mon – Thu" : "Lun – Jue"}<br/>10:00 AM – 9:00 PM</p>
+              <p className="text-sm text-muted-foreground mt-1">{lang === "en" ? "Fri – Sun" : "Vie – Dom"}<br/>10:00 AM – 10:00 PM</p>
+            </div>
+            <div>
+              <Phone className="w-6 h-6 text-[var(--amber-glow)] mb-3" />
+              <h3 className="font-bold mb-1">{tr("call_us")}</h3>
+              <a href="tel:+19185551234" className="text-sm text-muted-foreground hover:text-foreground">(918) 555-1234</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </Layout>
+  );
+}
